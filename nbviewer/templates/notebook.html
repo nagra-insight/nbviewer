@@ -129,4 +129,14 @@
     <span class='date' data-date='{{date}}' title='{{date}}'>({{date}})</span>
   </p>
   {% endif %}
+  <script>
+    $(document).ready(function(){
+        var show_code = !!window.location.search.match('code=[1|true|y|yes]')
+        if (show_code) {
+            $('div.input').show(100, function() {
+                $('div.cell').css({padding: '5px', border: '1px'});
+            });
+        }
+    });
+  </script>
 {% endblock extra_footer %}

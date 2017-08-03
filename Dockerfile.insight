@@ -1,0 +1,19 @@
+FROM jupyter/nbviewer
+
+MAINTAINER Nagra Insight
+
+USER root
+
+# replace less
+ADD ./nbviewer/static/less/variables.less /srv/nbviewer/nbviewer/static/less/variables.less
+ADD ./nbviewer/static/less/notebook.less /srv/nbviewer/nbviewer/static/less/notebook.less
+ADD ./nbviewer/static/less/layout.less /srv/nbviewer/nbviewer/static/less/layout.less
+RUN invoke less
+
+# replace templates
+ADD ./nbviewer/templates/notebook.html /srv/nbviewer/nbviewer/templates/notebook.html
+ADD ./nbviewer/templates/layout.html /srv/nbviewer/nbviewer/templates/layout.html
+
+USER nobody
+
+CMD ["python3", "-m", "nbviewer", "--port=8080", "--no-cache", "--base_url=/nbviewer"]

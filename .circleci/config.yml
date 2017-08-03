@@ -3,9 +3,13 @@ jobs:
   build:
     working_directory: ~/nbviewer
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: circleci/python:3.6.1
     steps:
       - checkout
+      - run:
+          name: check upstream changes
+          working_directory: ~/nbviewer
+          command: ./verify-changes.sh
       - run:
           name: clone product repo
           command: git clone git@github.com:nagra-insight/product.git ~/product

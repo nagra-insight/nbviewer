@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/nbviewer
+    docker:
+      - image: circleci/python:3.6.1
+    steps:
+      - checkout
+      - run:
+          name: clone product repo
+          command: git clone git@github.com:nagra-insight/product.git ~/product
+      - setup_remote_docker
+      - deploy:
+          name: Build and push Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker login -e="." -u="nagra+circleci_bot" -p $DOCKER_QUAY_PWD quay.io
+              ~/product/build/circle-docker-build.sh ~/nbviewer ni_nbviewer $CIRCLE_SHA1
+            fi

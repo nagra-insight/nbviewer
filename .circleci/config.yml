@@ -7,10 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: check upstream changes
-          working_directory: ~/nbviewer
-          command: ./verify-changes.sh
-      - run:
           name: clone product repo
           command: git clone git@github.com:nagra-insight/product.git ~/product
       - setup_remote_docker
@@ -19,5 +15,5 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -e="." -u="nagra+circleci_bot" -p $DOCKER_QUAY_PWD quay.io
-              ~/product/build/circle-docker-build.sh . ni_nbviewer $CIRCLE_SHA1 Dockerfile.insight
+              ~/product/build/circle-docker-build.sh ~/nbviewer ni_nbviewer $CIRCLE_SHA1
             fi
